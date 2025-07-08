@@ -1,6 +1,6 @@
 import type React from "react"
 import "@/app/globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "../components/ui/toaster";
 
 export const metadata = {
   title: "AlgoSensei - No-Code Trading Strategy Builder",
@@ -9,17 +9,12 @@ export const metadata = {
     generator: 'v0.dev'
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-black">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+      <body className="bg-black dark">
+        {children}
+        <Toaster />
       </body>
     </html>
   )

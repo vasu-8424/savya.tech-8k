@@ -16,7 +16,6 @@ interface MarketData {
 
 export function MarketDataWidget() {
   const [marketData, setMarketData] = useState<MarketData[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT")
   const [refreshing, setRefreshing] = useState(false)
 
@@ -28,7 +27,6 @@ export function MarketDataWidget() {
     } catch (error) {
       console.error("Error fetching market data:", error)
     } finally {
-      setIsLoading(false)
       setRefreshing(false)
     }
   }

@@ -1,170 +1,149 @@
-"use client"
-
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Canvas } from "@react-three/fiber"
-import { Environment, Float, Text3D } from "@react-three/drei"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { LoginBackground } from "@/components/login-background"
-import { ArrowLeft } from "lucide-react"
+'use client'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { supabase } from "../../lib/supabaseClient";
+import { toast } from "../../hooks/use-toast";
+import { useRouter } from "next/navigation";
+import bcrypt from "bcryptjs";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [activeTab, setActiveTab] = useState("login")
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
   return (
-    <main className="relative w-full h-screen overflow-hidden bg-black">
-      <div className="absolute inset-0 z-10">
-        <Canvas camera={{ position: [0, 0, 15], fov: 60 }}>
-          <color attach="background" args={["#050505"]} />
-          <Environment preset="city" />
-          <LoginBackground />
-
-          <Float speed={2} rotationIntensity={0.5} floatIntensity={1} position={[0, 3, 0]}>
-            <Text3D
-              font="/fonts/Geist_Bold.json"
-              size={1.2}
-              height={0.2}
-              curveSegments={12}
-              bevelEnabled
-              bevelThickness={0.02}
-              bevelSize={0.02}
-              bevelOffset={0}
-              bevelSegments={5}
-            >
-              {activeTab === "login" ? "Welcome Back" : "Join AlgoSensei"}
-              <meshStandardMaterial color="#14b8a6" metalness={0.8} roughness={0.2} />
-            </Text3D>
-          </Float>
-        </Canvas>
-      </div>
-
-      <Button
-        variant="ghost"
-        className="absolute top-4 left-4 z-20 text-white hover:text-teal-400 hover:bg-transparent"
-        onClick={() => router.push("/")}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, type: "spring" }}
+        className="bg-gray-900/80 rounded-3xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center"
       >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Home
-      </Button>
-
-      <div className="absolute inset-0 z-20 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md bg-black/80 border-teal-500/30 backdrop-blur-md">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white text-center">
-              {activeTab === "login" ? "Login to AlgoSensei" : "Create an Account"}
-            </CardTitle>
-            <CardDescription className="text-center text-gray-400">
-              {activeTab === "login"
-                ? "Access your algorithmic trading strategies"
-                : "Start building your trading algorithms today"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-gray-900/50">
-                <TabsTrigger value="login" className="data-[state=active]:bg-teal-500 data-[state=active]:text-black">
-                  Login
-                </TabsTrigger>
-                <TabsTrigger
-                  value="register"
-                  className="data-[state=active]:bg-teal-500 data-[state=active]:text-black"
-                >
-                  Register
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="login" className="mt-4">
-                <form className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Email</label>
-                    <Input
-                      type="email"
-                      placeholder="your@email.com"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium text-gray-300">Password</label>
-                      <Button variant="link" className="text-xs text-teal-400 p-0">
-                        Forgot Password?
-                      </Button>
-                    </div>
-                    <Input
-                      type="password"
-                      placeholder="••••••••"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
-                  </div>
-                  <Button
-                    type="button"
-                    className="w-full bg-teal-500 hover:bg-teal-600 text-black font-bold"
-                    onClick={() => router.push("/studio")}
-                  >
-                    Login
-                  </Button>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="register" className="mt-4">
-                <form className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Name</label>
-                    <Input type="text" placeholder="John Doe" className="bg-gray-900/50 border-gray-700 text-white" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Email</label>
-                    <Input
-                      type="email"
-                      placeholder="your@email.com"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Password</label>
-                    <Input
-                      type="password"
-                      placeholder="••••••••"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Confirm Password</label>
-                    <Input
-                      type="password"
-                      placeholder="••••••••"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
-                  </div>
-                  <Button
-                    type="button"
-                    className="w-full bg-teal-500 hover:bg-teal-600 text-black font-bold"
-                    onClick={() => router.push("/strategy")}
-                  >
-                    Create Account
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-          <CardFooter className="flex justify-center border-t border-gray-800 pt-4">
-            <p className="text-sm text-gray-400">
-              {activeTab === "login" ? "Don't have an account? " : "Already have an account? "}
-              <Button
-                variant="link"
-                className="p-0 text-teal-400"
-                onClick={() => setActiveTab(activeTab === "login" ? "register" : "login")}
-              >
-                {activeTab === "login" ? "Sign up" : "Login"}
-              </Button>
-            </p>
-          </CardFooter>
-        </Card>
-      </div>
-    </main>
-  )
-}
+        <h2 className="text-3xl font-bold mb-6 text-teal-400">Login</h2>
+        <form
+          className="w-full flex flex-col gap-4 mb-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setError(null);
+            setLoading(true);
+            if (!email || !password) {
+              setError('All fields are required.');
+              toast({
+                title: 'Login failed',
+                description: 'All fields are required.',
+              });
+              setLoading(false);
+              return;
+            }
+            // Fetch user from users table
+            const { data: userData, error: userError } = await supabase
+              .from('users')
+              .select('password')
+              .eq('email', email)
+              .single();
+            if (userError || !userData) {
+              setError('User not found.');
+              toast({
+                title: 'Login failed',
+                description: 'User not found.',
+              });
+              setLoading(false);
+              return;
+            }
+            const isValid = await bcrypt.compare(password, userData.password);
+            if (!isValid) {
+              setError('Invalid password.');
+              toast({
+                title: 'Login failed',
+                description: 'Invalid password.',
+              });
+              setLoading(false);
+              return;
+            }
+            
+            // Password is valid, proceed with login success
+            setError(null);
+            toast({
+              title: 'Login successful',
+              description: 'Welcome back! Redirecting to your dashboard...'
+            });
+            
+            // Store user session/authentication state if needed
+            // You can store user data in localStorage or context here
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            // Debug logging
+            console.log('Login successful, localStorage set:', {
+              userEmail: localStorage.getItem('userEmail'),
+              isLoggedIn: localStorage.getItem('isLoggedIn')
+            });
+            
+            // Immediate redirect to dashboard
+            router.push('/dashboard');
+            setLoading(false);
+          }}
+        >
+          <motion.input
+            whileFocus={{ scale: 1.04, boxShadow: "0 0 0 2px #14b8a6" }}
+            type="email"
+            placeholder="Email"
+            className="px-4 py-3 rounded-xl bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-teal-400 transition-all"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+          <motion.input
+            whileFocus={{ scale: 1.04, boxShadow: "0 0 0 2px #14b8a6" }}
+            type="password"
+            placeholder="Password"
+            className="px-4 py-3 rounded-xl bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-teal-400 transition-all"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
+          {error && <div className="text-red-400 text-sm mb-2">{error}</div>}
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: "0 4px 24px #14b8a6aa" }}
+            whileTap={{ scale: 0.97 }}
+            type="submit"
+            disabled={loading}
+            className="mt-2 bg-teal-500 text-black font-bold py-3 rounded-2xl shadow-md border-b-2 border-teal-700 transition-all text-lg"
+          >
+            {loading ? "Loading..." : "Login"}
+          </motion.button>
+        </form>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="flex gap-6 mb-4"
+        >
+          <motion.button
+            whileHover={{ scale: 1.2, rotate: 10 }}
+            className="bg-gray-800 p-3 rounded-full shadow hover:bg-gray-700 transition-all border border-gray-700"
+            aria-label="Login with GitHub"
+          >
+            {/* GitHub SVG */}
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#14e0ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.87 8.28 6.84 9.63.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 6.84c.85.004 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .26.18.57.69.48A10.01 10.01 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"/></svg>
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.2, rotate: -10 }}
+            className="bg-gray-800 p-3 rounded-full shadow hover:bg-gray-700 transition-all border border-gray-700"
+            aria-label="Login with Google"
+          >
+            {/* Google SVG */}
+            <svg width="22" height="22" viewBox="0 0 48 48"><g><path fill="#14e0ff" d="M43.6 20.5H42V20.4H24v7.2h11.2c-1.6 4.2-5.6 7.2-10.2 7.2-6 0-10.8-4.9-10.8-10.8s4.9-10.8 10.8-10.8c2.4 0 4.6.8 6.4 2.2l5.4-5.4C33.2 7.1 28.8 5.2 24 5.2c-10.4 0-18.8 8.4-18.8 18.8s8.4 18.8 18.8 18.8c9.4 0 17.6-6.8 18.7-15.6.1-.5.1-1 .1-1.5 0-1.2-.1-2.1-.2-3.2z"/><path fill="#fff" d="M6.3 14.7l5.9 4.3C14 16.2 18.6 13 24 13c2.4 0 4.6.8 6.4 2.2l5.4-5.4C33.2 7.1 28.8 5.2 24 5.2c-7.7 0-14.2 4.3-17.7 10.5z"/><path fill="#fff" d="M24 44c4.3 0 8.3-1.4 11.4-3.8l-5.3-4.3c-1.6 1.1-3.7 1.8-6.1 1.8-4.6 0-8.6-3-10.1-7.2l-5.9 4.6C9.7 40.1 16.3 44 24 44z"/><path fill="#fff" d="M43.6 20.5H42V20.4H24v7.2h11.2c-.7 2-2.1 3.7-3.9 4.9l6 4.6c1.7-1.6 3-3.9 3.3-6.5.1-.5.1-1 .1-1.5 0-1.2-.1-2.1-.2-3.2z"/></g></svg>
+          </motion.button>
+        </motion.div>
+        <div className="text-gray-400 text-sm">
+          Don&apos;t have an account?{' '}
+          <Link href="/signup" className="text-teal-400 hover:underline font-bold">Sign up</Link>
+        </div>
+      </motion.div>
+    </div>
+  );
+} 

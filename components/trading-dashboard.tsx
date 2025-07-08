@@ -32,7 +32,6 @@ export function TradingDashboard() {
   const [marketData, setMarketData] = useState<MarketData[]>([])
   const [historicalData, setHistoricalData] = useState<KlineData[]>([])
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT")
-  const [isLoading, setIsLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [aiAdvice, setAiAdvice] = useState("")
   const [aiLoading, setAiLoading] = useState(false)
@@ -47,7 +46,6 @@ export function TradingDashboard() {
     } catch (error) {
       console.error("Error fetching market data:", error)
     } finally {
-      setIsLoading(false)
       setRefreshing(false)
     }
   }
