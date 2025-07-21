@@ -62,14 +62,16 @@ export default function GetStartedPage() {
       </p>
       <div className="flex gap-4 mb-6">
         <button
-          className={`blue-launch-btn ${form === 'login' ? 'blue-launch-btn-active' : ''}`}
+          className={`launch-btn-home ${form === 'login' ? 'active' : ''}`}
+          style={{ minWidth: 180, minHeight: 54, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.7rem', padding: '0.7rem 2.2rem', borderRadius: 14 }}
           onClick={() => setForm('login')}
           type="button"
         >
           <RocketIcon /> LOGIN
         </button>
         <button
-          className={`blue-launch-btn ${form === 'signup' ? 'blue-launch-btn-active' : ''}`}
+          className={`launch-btn-home ${form === 'signup' ? 'active' : ''}`}
+          style={{ minWidth: 180, minHeight: 54, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.7rem', padding: '0.7rem 2.2rem', borderRadius: 14 }}
           onClick={() => setForm('signup')}
           type="button"
         >
@@ -104,7 +106,7 @@ export default function GetStartedPage() {
                     setError(loginError.message);
                   } else {
                     setError(null);
-                    router.push('/');
+                    router.push('/dashboard');
                   }
                   setLoading(false);
                 }}
@@ -438,6 +440,50 @@ export default function GetStartedPage() {
         .blue-launch-btn-active {
           box-shadow: 0 0 18px 4px #38bdf8cc;
           filter: brightness(1.08) drop-shadow(0 0 8px #38bdf8cc);
+        }
+        .launch-btn-home {
+          background: rgba(31, 41, 55, 0.3);
+          color: #9ca3af;
+          border: 1px solid rgba(75, 85, 99, 0.4);
+          font-family: inherit;
+          font-size: 1.1rem;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          box-shadow: none;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(8px);
+        }
+        .launch-btn-home:after {
+          content: '';
+          position: absolute;
+          left: -40%;
+          top: 0;
+          width: 40%;
+          height: 100%;
+          background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+          transform: skewX(-20deg);
+          transition: left 0.4s cubic-bezier(.4,2,.6,1);
+          pointer-events: none;
+          opacity: 0;
+        }
+        .launch-btn-home:hover:after, .launch-btn-home:focus:after {
+          left: 60%;
+          opacity: 1;
+        }
+        .launch-btn-home:hover, .launch-btn-home:focus {
+          background: rgba(20, 184, 166, 0.15);
+          color: #14b8a6;
+          border-color: rgba(20, 184, 166, 0.3);
+          box-shadow: 0 0 20px rgba(20, 184, 166, 0.2);
+          transform: translateY(-1px);
+          outline: none;
+        }
+        .launch-btn-home.active {
+          background: rgba(20, 184, 166, 0.12);
+          color: #14b8a6;
+          border-color: rgba(20, 184, 166, 0.25);
         }
       `}</style>
     </div>

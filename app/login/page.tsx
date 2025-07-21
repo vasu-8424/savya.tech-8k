@@ -83,7 +83,7 @@ export default function LoginPage() {
             });
             
             // Immediate redirect to dashboard
-            router.push('/dashboard');
+            window.location.href = '/dashboard';
             setLoading(false);
           }}
         >
@@ -106,15 +106,14 @@ export default function LoginPage() {
             required
           />
           {error && <div className="text-red-400 text-sm mb-2">{error}</div>}
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: "0 4px 24px #14b8a6aa" }}
-            whileTap={{ scale: 0.97 }}
+          <button
             type="submit"
             disabled={loading}
-            className="mt-2 bg-teal-500 text-black font-bold py-3 rounded-2xl shadow-md border-b-2 border-teal-700 transition-all text-lg"
+            className="launch-btn-home pointer-events-auto font-bold text-lg mt-2"
+            style={{ minWidth: 180, minHeight: 54, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.7rem', padding: '0.7rem 2.2rem', borderRadius: 14 }}
           >
             {loading ? "Loading..." : "Login"}
-          </motion.button>
+          </button>
         </form>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -144,6 +143,47 @@ export default function LoginPage() {
           <Link href="/signup" className="text-teal-400 hover:underline font-bold">Sign up</Link>
         </div>
       </motion.div>
+      <style jsx global>{`
+        .launch-btn-home {
+          background: rgba(31, 41, 55, 0.15);
+          color: #b6bcc6;
+          border: 1px solid rgba(75, 85, 99, 0.18);
+          font-family: inherit;
+          font-size: 1.1rem;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          box-shadow: none;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(8px);
+        }
+        .launch-btn-home:after {
+          content: '';
+          position: absolute;
+          left: -40%;
+          top: 0;
+          width: 40%;
+          height: 100%;
+          background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+          transform: skewX(-20deg);
+          transition: left 0.4s cubic-bezier(.4,2,.6,1);
+          pointer-events: none;
+          opacity: 0;
+        }
+        .launch-btn-home:hover:after, .launch-btn-home:focus:after {
+          left: 60%;
+          opacity: 1;
+        }
+        .launch-btn-home:hover, .launch-btn-home:focus {
+          background: rgba(20, 184, 166, 0.08);
+          color: #14b8a6;
+          border-color: rgba(20, 184, 166, 0.15);
+          box-shadow: 0 0 10px rgba(20, 184, 166, 0.08);
+          transform: translateY(-1px);
+          outline: none;
+        }
+      `}</style>
     </div>
   );
 } 

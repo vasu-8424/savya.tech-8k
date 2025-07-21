@@ -22,9 +22,9 @@ export default function Home() {
   const [splashStage, setSplashStage] = useState<'logo' | 'loading' | 'main'>('logo');
 
   useEffect(() => {
-    // 1. Show logo for 3s, then loading for 1.5s, then main page
-    const logoTimer = setTimeout(() => setSplashStage('loading'), 3000);
-    const loadingTimer = setTimeout(() => setSplashStage('main'), 4500);
+    // Show logo for 0.5s, then loading for 0.5s, then main page
+    const logoTimer = setTimeout(() => setSplashStage('loading'), 500);
+    const loadingTimer = setTimeout(() => setSplashStage('main'), 1000);
     return () => {
       clearTimeout(logoTimer);
       clearTimeout(loadingTimer);
