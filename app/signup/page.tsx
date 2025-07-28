@@ -136,6 +136,12 @@ export default function SignupPage() {
             whileHover={{ scale: 1.2, rotate: 10 }}
             className="bg-gray-800 p-3 rounded-full shadow hover:bg-gray-700 transition-all border border-gray-700"
             aria-label="Sign up with GitHub"
+            onClick={async () => {
+              setLoading(true);
+              const { error } = await supabase.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: '/dashboard' } });
+              setLoading(false);
+              if (error) setError(error.message);
+            }}
           >
             <FaGithub size={28} className="text-white" />
           </motion.button>
@@ -143,6 +149,12 @@ export default function SignupPage() {
             whileHover={{ scale: 1.2, rotate: -10 }}
             className="bg-gray-800 p-3 rounded-full shadow hover:bg-gray-700 transition-all border border-gray-700"
             aria-label="Sign up with Google"
+            onClick={async () => {
+              setLoading(true);
+              const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: '/dashboard' } });
+              setLoading(false);
+              if (error) setError(error.message);
+            }}
           >
             <FaGoogle size={28} className="text-white" />
           </motion.button>

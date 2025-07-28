@@ -3,16 +3,16 @@ import "@/app/globals.css"
 import { Toaster } from "../components/ui/toaster";
 
 export const metadata = {
-  title: "AlgoSensei - No-Code Trading Strategy Builder",
+  title: "Savya Technologies -young minds launching epic digital solutions!",
   description:
-    "Build, backtest, and deploy algorithmic trading strategies with AI-powered simplicity. No coding required.",
+    "Converting your ideas into amazing web and mobile applications.",
     generator: 'v0.dev'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-black dark">
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-black" suppressHydrationWarning>
         {children}
         <Toaster />
       </body>

@@ -64,7 +64,7 @@ function GridPoints({ mouse }: { mouse: { x: number; y: number } }) {
   const animatedPositions = useRef<Array<[number, number, number]>>([]);
 
   useEffect(() => {
-    const gridSize = 14;
+    const gridSize = 8;
     const spacing = 1;
     const newPoints: Array<[number, number, number]> = [];
     for (let x = -gridSize; x <= gridSize; x += spacing) {
@@ -114,7 +114,7 @@ function FloatingParticles({ mouse }: { mouse: { x: number; y: number } }) {
   >([]);
 
   useEffect(() => {
-    const count = 120; // more particles
+    const count = 40; // reduced particles for memory safety
     const newParticles = [];
 
     for (let i = 0; i < count; i++) {

@@ -146,11 +146,21 @@ export default function GetStartedPage() {
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="flex gap-4 mb-2"
               >
-                <button className="neon-btn-icon" aria-label="Login with GitHub">
+                <button className="neon-btn-icon" aria-label="Login with GitHub" onClick={async () => {
+  setLoading(true);
+  const { error } = await supabase.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: '/dashboard' } });
+  setLoading(false);
+  if (error) setError(error.message);
+}}>
                   {/* GitHub SVG */}
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#14e0ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.87 8.28 6.84 9.63.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 6.84c.85.004 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .26.18.57.69.48A10.01 10.01 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"/></svg>
                 </button>
-                <button className="neon-btn-icon" aria-label="Login with Google">
+                <button className="neon-btn-icon" aria-label="Login with Google" onClick={async () => {
+  setLoading(true);
+  const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: '/dashboard' } });
+  setLoading(false);
+  if (error) setError(error.message);
+}}>
                   {/* Google SVG */}
                   <svg width="22" height="22" viewBox="0 0 48 48"><g><path fill="#14e0ff" d="M43.6 20.5H42V20.4H24v7.2h11.2c-1.6 4.2-5.6 7.2-10.2 7.2-6 0-10.8-4.9-10.8-10.8s4.9-10.8 10.8-10.8c2.4 0 4.6.8 6.4 2.2l5.4-5.4C33.2 7.1 28.8 5.2 24 5.2c-10.4 0-18.8 8.4-18.8 18.8s8.4 18.8 18.8 18.8c9.4 0 17.6-6.8 18.7-15.6.1-.5.1-1 .1-1.5 0-1.2-.1-2.1-.2-3.2z"/><path fill="#fff" d="M6.3 14.7l5.9 4.3C14 16.2 18.6 13 24 13c2.4 0 4.6.8 6.4 2.2l5.4-5.4C33.2 7.1 28.8 5.2 24 5.2c-7.7 0-14.2 4.3-17.7 10.5z"/><path fill="#fff" d="M24 44c4.3 0 8.3-1.4 11.4-3.8l-5.3-4.3c-1.6 1.1-3.7 1.8-6.1 1.8-4.6 0-8.6-3-10.1-7.2l-5.9 4.6C9.7 40.1 16.3 44 24 44z"/><path fill="#fff" d="M43.6 20.5H42V20.4H24v7.2h11.2c-.7 2-2.1 3.7-3.9 4.9l6 4.6c1.7-1.6 3-3.9 3.3-6.5.1-.5.1-1 .1-1.5 0-1.2-.1-2.1-.2-3.2z"/></g></svg>
                 </button>
